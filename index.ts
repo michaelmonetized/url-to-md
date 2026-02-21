@@ -30,9 +30,30 @@ program
       process.exit(1);
     }
 
+    // Validate URL
+    let parsedUrl: URL;
+    try {
+      parsedUrl = new URL(url);
+    } catch {
+      console.error('Error: Invalid URL');
+      process.exit(1);
+    }
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+      console.error('Error: URL must use http or https protocol');
+      process.exit(1);
+    }
+
     try {
       console.log(`Fetching ${url}...`);
-      const response = await fetch(url);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 10000);
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        },
+      });
+      clearTimeout(timeout);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,7 +99,7 @@ program
       turndownService.addRule('table', {
         filter: 'table',
         replacement: function (content, node) {
-          const rows = content.trim().split('\n');
+          const rows = content.trim().split('\n').filter(row => row.trim());
           if (rows.length === 0) return '';
 
           const headerRow = rows[0];
@@ -88,7 +109,7 @@ program
             .map(() => '---')
             .join(' | ');
 
-          return rows[0] + '| ' + separator + ' |\n' + rows.slice(1).join('');
+          return '\n\n' + rows[0] + '\n| ' + separator + ' |\n' + rows.slice(1).join('\n') + '\n\n';
         },
       });
 
@@ -111,7 +132,8 @@ program
       turndownService.addRule('videos', {
         filter: 'video',
         replacement: function (content, node: any) {
-          const src = node.getAttribute('src') || node.querySelector('source')?.getAttribute('src') || '';
+          const $node = $(node);
+          const src = node.getAttribute('src') || $node.find('source').attr('src') || '';
           const poster = node.getAttribute('poster');
 
           if (!src) return content;
@@ -128,7 +150,7 @@ program
       turndownService.addRule('svg', {
         filter: 'svg',
         replacement: function (content, node: any) {
-          return '\n\n```svg\n' + node.outerHTML + '\n```\n\n';
+          return '\n\n```svg\n' + $.html(node) + '\n```\n\n';
         },
       });
 
