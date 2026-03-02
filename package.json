@@ -1,9 +1,16 @@
 {
   "name": "url-to-md",
   "version": "1.0.0",
+  "description": "Convert HTML from any URL to clean markdown with advanced table support and media preservation. Saves ~40% tokens for AI agents.",
   "module": "mod.ts",
   "type": "module",
-  "private": true,
+  "keywords": ["markdown", "html-to-markdown", "url-to-markdown", "cli", "ai", "token-savings", "web-scraping"],
+  "author": "michaelmonetized",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelmonetized/url-to-md"
+  },
   "exports": {
     ".": "./mod.ts"
   },
