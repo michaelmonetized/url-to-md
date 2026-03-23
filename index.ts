@@ -26,14 +26,14 @@ program
     const output = options.output || outputArg || 'README.md';
 
     if (!url) {
-      console.error('Error: URL is required');
-      console.log('\nUsage: url-to-md <url> [selector] [output]');
-      console.log('   or: url-to-md --url <url> --selector <selector> --output <output>');
+      // console.error('Error: URL is required');
+      // console.log('\nUsage: url-to-md <url> [selector] [output]');
+      // console.log('   or: url-to-md --url <url> --selector <selector> --output <output>');
       process.exit(1);
     }
 
     try {
-      console.log(`Fetching ${url}...`);
+      // console.log(`Fetching ${url}...`);
       const result = await urlToMarkdown(url, { selector });
 
       if (!result.selectorMatched) {
@@ -45,16 +45,16 @@ program
         const dir = dirname(output);
         if (!existsSync(dir)) {
           await mkdir(dir, { recursive: true });
-          console.log(`✓ Created directory: ${dir}`);
+          // console.log(`✓ Created directory: ${dir}`);
         }
       }
 
       await Bun.write(output, result.markdown);
 
-      console.log(`✓ Successfully converted to markdown`);
-      console.log(`✓ Output saved to: ${output}`);
+      // console.log(`✓ Successfully converted to markdown`);
+      // console.log(`✓ Output saved to: ${output}`);
     } catch (error) {
-      console.error('Error:', error instanceof Error ? error.message : String(error));
+      // console.error('Error:', error instanceof Error ? error.message : String(error));
       process.exit(1);
     }
   });
