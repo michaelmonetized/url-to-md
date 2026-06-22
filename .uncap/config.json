@@ -1,0 +1,19 @@
+{
+  "repoId": "r17a7dn30y3ec0mbbvqtqy7c4n87nnbt",
+  "owner": "uncap_user",
+  "name": "url-to-md",
+  "originType": "native",
+  "legacy": {
+    "hasGitHub": false,
+    "hasGit": true
+  },
+  "defaults": {
+    "file": "public",
+    "fragment": "public",
+    "issue": "public",
+    "pullRequest": "public",
+    "branch": "public",
+    "comment": "public"
+  },
+  "headSha": ""
+}
